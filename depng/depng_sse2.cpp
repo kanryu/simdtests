@@ -1015,7 +1015,7 @@ static SIMD_INLINE void depng_filter_sse2_template(uint8_t* p, uint32_t h, uint3
             else if (bpp == 6) {
               __m128i pz = _mm_unpacklo_epi8(_mm_loadl_epi64(reinterpret_cast<__m128i*>(p)), zero);
               __m128i uz = _mm_unpacklo_epi8(_mm_loadl_epi64(reinterpret_cast<__m128i*>(u)), zero);
-              __m128i mask = _mm_setr_epi32(0, 0xFFFFFFFF, 0, 0);
+              //__m128i mask = _mm_setr_epi32(0, 0xFFFFFFFF, 0, 0);
 
               // Process 16 BYTEs at a time.
               while (i >= 16) {

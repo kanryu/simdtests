@@ -226,21 +226,21 @@ namespace SimdUtils {
     return (alignment - static_cast<uint32_t>((uintptr_t)p & mask)) & mask;
   }
 
-  static uint64_t ulpDiff(double a, double b) {
-    union U {
-      double d;
-      uint64_t u;
-    };
-
-    U x, y;
-    x.d = a;
-    y.d = b;
-
-    if (x.u > y.u)
-      return x.u - y.u;
-    else
-      return y.u - x.u;
-  }
+//  static uint64_t ulpDiff(double a, double b) {
+//    union U {
+//      double d;
+//      uint64_t u;
+//    };
+//
+//    U x, y;
+//    x.d = a;
+//    y.d = b;
+//
+//    if (x.u > y.u)
+//      return x.u - y.u;
+//    else
+//      return y.u - x.u;
+//  }
 };
 
 // ============================================================================
