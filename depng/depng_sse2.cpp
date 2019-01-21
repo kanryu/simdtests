@@ -487,10 +487,10 @@ static SIMD_INLINE void depng_filter_sse2_template(uint8_t* p, uint32_t h, uint3
       //     +-----------+-----------+-----------+-----------+
 
       case kPngFilterUp: {
-		if (u == nullptr) {
-		  p += bpl;
-		  break;
-		}
+        if (u == nullptr) {
+          p += bpl;
+          break;
+        }
         i = bpl;
 
         if (i >= 24) {
@@ -581,12 +581,16 @@ static SIMD_INLINE void depng_filter_sse2_template(uint8_t* p, uint32_t h, uint3
       //     Y5' = ...
 
       case kPngFilterAvg: {
-		if (u == nullptr) {
-			for (i = bpp; i < bpl; i++, p++)
-				p[bpp] = depng_sum(p[bpp], p[0] >> 1);
-			break;
-		}
-		for (i = 0; i < bpp; i++)
+        if (u == nullptr) {
+          for (i = 0; i < bpp; i++)
+            p[i] = p[i];
+          for (i = bpl - bpp; i != 0; i--, p++, u++)
+            p[bpp] = depng_sum(p[bpp], p[0] >> 1);
+
+          p += bpp;
+          break;
+        }
+        for (i = 0; i < bpp; i++)
           p[i] = depng_sum(p[i], u[i] >> 1);
 
         i = bpl - bpp;
@@ -879,11 +883,16 @@ static SIMD_INLINE void depng_filter_sse2_template(uint8_t* p, uint32_t h, uint3
       // ----------------------------------------------------------------------
 
       case kPngFilterPaeth: {
-		if (u == nullptr) {
-		  p += bpl;
-		  break;
-		}
-		if (bpp == 1) {
+        if (u == nullptr) {
+          for (i = 0; i < bpp; i++)
+            p[i] = p[i];
+          for (i = bpl - bpp; i != 0; i--, p++, u++)
+            p[bpp] = depng_sum(p[bpp], p[0]);
+
+          p += bpp;
+          break;
+        }
+        if (bpp == 1) {
           // There is not much to optimize for 1BPP. The only thing this code
           // does is to keep `p0` and `u0` values from the current iteration
           // to the next one (they become `pz` and `uz`).
